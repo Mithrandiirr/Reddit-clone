@@ -10,7 +10,7 @@ import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { createClient } from "redis";
 import connectRedis from 'connect-redis'
-import { __prod__ } from "./constants";
+import { COOKIE_NAME, __prod__ } from "./constants";
 import { MyContext } from "./types";
 import cors from 'cors'
 
@@ -32,7 +32,7 @@ const main = async  () =>
     )
     app.use(
       session({
-        name: 'qid',
+        name: COOKIE_NAME,
         store: new RedisStore({ 
           client: redisClient as any, 
           disableTouch: true,
