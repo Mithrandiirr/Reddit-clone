@@ -12,4 +12,4 @@ const Index = () =>
      {!data ? null : data.posts.map((p)=> <div key={p.id}>{p.title}</div>)}
     </>
 )}
-export default withUrqlClient(createUrqlClient, {ssr: true})(Index)
+export default withUrqlClient(createUrqlClient, {ssr: false})(Index)
