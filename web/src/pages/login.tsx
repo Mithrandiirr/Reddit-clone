@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form, Formik} from 'formik'
-import {  Box, Button } from '@chakra-ui/react';
+import {  Box, Button, Flex } from '@chakra-ui/react';
 import Layout from '../components/Layout'
 import InputField from '../components/InputField';
 import { useLoginMutation, useRegisterMutation } from '../generated/graphql';
@@ -8,6 +8,8 @@ import { toErrorMap } from '../utils/toErrorMap';
 import {useRouter} from 'next/router'
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../utils/createUrqlClient';
+import {Link} from '@chakra-ui/react';
+import NextLink from 'next/link'
 interface registerProps {
 
 }
@@ -16,6 +18,7 @@ interface registerProps {
 const Login: React.FC<registerProps> = ({}) => {
     const [,login] = useLoginMutation()
     const router = useRouter()
+  console.log(router)
         return (
             <Layout variant='small'>
 
@@ -25,7 +28,13 @@ const Login: React.FC<registerProps> = ({}) => {
               if(response.data?.login.errors){
                 setErrors(toErrorMap(response.data.login.errors))
               }else if(response.data?.login.user) {
-                router.push('/')
+                if(typeof router.query.next === 'string')
+                {
+                  router.push(router.query.next)
+                }
+                else {
+                  router.push('/')
+                }
               }
               }}>
            
@@ -45,13 +54,23 @@ const Login: React.FC<registerProps> = ({}) => {
                     type="password"
                     />
                         </Box>
-                  <Button 
-                  mt={4}
+                        <Flex mt={4} alignItems='center'>
+                        <Button 
+                  
                   type="submit"
                   isLoading={isSubmitting}
                   >
                     login
                   </Button>
+
+                  <NextLink  href='/forgot-password'>
+                    <Link width='100%' textAlign='end'>
+                    Forgot Password ?
+                    </Link>
+                 
+                  </NextLink>
+                        </Flex>
+                  
                 </Form>
             )
             }

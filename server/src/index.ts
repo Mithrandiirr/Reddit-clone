@@ -19,7 +19,8 @@ import { AppDataSource } from "./utils/DataSource";
 const main = async  () =>
 {
 
-  AppDataSource
+   AppDataSource
+   
     const app = express();
     const RedisStore = connectRedis(session)
     const redis =new Redis()

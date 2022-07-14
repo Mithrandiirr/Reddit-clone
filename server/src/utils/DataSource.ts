@@ -1,6 +1,7 @@
 import { Post } from "../entities/Post"
 import { User } from "../entities/User"
 import { DataSource } from "typeorm"
+import path from "path"
 
 export const AppDataSource =  new DataSource({
     type: "postgres",
@@ -9,10 +10,12 @@ export const AppDataSource =  new DataSource({
     database: "reddit",
     synchronize: true,
     logging: true,
+    
+    migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Post],
 })
 AppDataSource.initialize()
     .then(() => {
-        // here you can start to work with your database
+      AppDataSource.runMigrations()
     })
     .catch((error) => console.log(error))
