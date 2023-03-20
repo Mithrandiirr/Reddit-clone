@@ -11,16 +11,27 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import { MyContext } from "./types";
 import cors from 'cors'
 import Redis from "ioredis";
-// import { DataSource } from "typeorm";
-// import { Post } from "./entities/Post";
-// import { User } from "./entities/User";
-import { AppDataSource } from "./utils/DataSource";
-
+import { Post } from "./entities/Post";
+import { User } from "./entities/User";
+import { DataSource } from "typeorm"
 const main = async  () =>
 {
-
-   AppDataSource
-   
+  const AppDataSource = new DataSource({
+    type: "postgres",
+    username: "postgres",
+    password: "123456",
+    database: "reddit",
+    synchronize: true,
+    logging: true,
+    
+    migrations: ["./migrations/*"],
+    entities: [User, Post],
+})
+  AppDataSource.initialize()
+  .then(() => {
+      AppDataSource.runMigrations()
+    })
+  .catch((error) => console.log(error))
     const app = express();
     const RedisStore = connectRedis(session)
     const redis =new Redis()

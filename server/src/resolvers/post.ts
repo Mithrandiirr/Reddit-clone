@@ -45,10 +45,7 @@ export class PostResolver {
                 cursor: new Date(parseInt(cursor))
              });
         };
-
-
         const posts = await qb.getMany();
-        
         return{ 
             posts: posts.slice(0, realLimit), 
             hasMore: posts.length === realLimitPlusOne
@@ -67,7 +64,6 @@ export class PostResolver {
         @Arg('input') input: PostInput,
         @Ctx() {req} : MyContext
         ): Promise<Post>
-        
         {
       
         return Post.create({
